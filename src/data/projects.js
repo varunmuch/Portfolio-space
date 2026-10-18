@@ -20,6 +20,22 @@
  */
 export const PROJECTS = [
   {
+    name: 'KV Playground',
+    tagline: 'See where every key and value lives inside an LLM',
+    description:
+      'An open-source lab that runs Qwen3.5-0.8B locally and follows your own prompt through the model, token by token. Includes a step-by-step lesson built on your real tokens, a live no-cache vs KV-cache race (up to 27× faster decoding), a memory simulator for four cache layouts, and a benchmarks page — all runnable with one Docker command.',
+    tags: ['LLM Inference', 'KV Cache', 'Qwen3.5', 'Benchmarking', 'Docker'],
+    stat: { value: '27×', label: 'Faster decode' },
+    href: 'https://github.com/varunmuch/KV-Playground',
+    visual: {
+      bg: 'linear-gradient(135deg, #120a1a 0%, #1a0f24 100%)',
+      grid: true,
+      symbol: '⧉',
+      color: 'rgba(196,140,255,0.07)',
+      accent: 'rgba(196,140,255,0.70)',
+    },
+  },
+  {
   name: 'Hurricane Simulator',
   tagline: 'AI-powered hurricane evacuation planning system',
   description:

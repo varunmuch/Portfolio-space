@@ -16,7 +16,7 @@ const SKILL_GROUPS = [
 
 const STATS = [
   { value: '3.9',                       label: 'M.S. GPA' },
-  { value: String(PROJECTS.length),     label: 'Live projects' },
+  { value: String(PROJECTS.length),     label: 'Projects' },
   { value: `${SKILL_GROUPS.reduce((n, g) => n + g.skills.length, 0)}+`, label: 'Technologies' },
 ]
 

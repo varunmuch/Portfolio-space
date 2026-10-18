@@ -59,7 +59,7 @@ function ProjectCard({ project, index, featured, reverse }) {
             {project.tags.map(t => <span key={t} className="chip">{t}</span>)}
           </div>
           <span className="mono project-launch">
-            Launch project <FiArrowUpRight className="arrow" size={14} />
+            {project.href.includes('github.com') ? 'View on GitHub' : 'Launch project'} <FiArrowUpRight className="arrow" size={14} />
           </span>
         </div>
       </motion.a>
@@ -74,7 +74,7 @@ export default function Projects() {
         index="03"
         eyebrow="Active missions"
         title={<>Selected <span className="serif-italic aurora-text">projects</span></>}
-        subtitle="Things I've designed, built, and shipped — from multi-agent simulations to retrieval pipelines."
+        subtitle="Things I've designed, built, and shipped — from LLM inference internals to multi-agent simulations."
       />
       <div className="projects-grid">
         {PROJECTS.map((p, i) => {
