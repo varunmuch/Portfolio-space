@@ -315,10 +315,35 @@ const PLANETS = [
   { name: 'Neptune', orbitRadius: 32.5, size: 0.86, color: '#2244dd', emissive: '#080e55', speed: 0.005, initialAngle: 4.9, axialTilt: 0.49, atmosphere: { color: '#4466ff', opacity: 0.13 }, moons: [{ orbitR: 1.4, size: 0.13, speed: 0.12, color: '#99aacc', initialAngle: 2.2 }] },
 ]
 
+// ── Camera rig — glides through the system as the page scrolls ─
+const LOOK_AT = new THREE.Vector3(0, 0, -6)
+
+function CameraRig() {
+  const target = useMemo(() => new THREE.Vector3(), [])
+
+  useFrame(({ camera, pointer, size }) => {
+    // Shift the projection so the sun sits right of the text column (or low-right on phones)
+    const wide = size.width > 960
+    camera.setViewOffset(size.width, size.height, wide ? -size.width * 0.2 : -size.width * 0.3, wide ? 0 : -size.height * 0.22, size.width, size.height)
+
+    const max = document.documentElement.scrollHeight - window.innerHeight
+    const p   = max > 0 ? window.scrollY / max : 0
+    target.set(
+      Math.sin(p * Math.PI) * 14 + pointer.x * 1.6,
+      18 - p * 13 + pointer.y * 1.2,
+      30 - Math.sin(p * Math.PI) * 9,
+    )
+    camera.position.lerp(target, 0.04)
+    camera.lookAt(LOOK_AT)
+  })
+  return null
+}
+
 // ── Scene ─────────────────────────────────────────────────────
 function Scene() {
   return (
     <>
+      <CameraRig />
       <ambientLight intensity={0.18} color="#223366" />
       <StarField />
       <MilkyWay />
@@ -333,10 +358,13 @@ function Scene() {
 // ── Export ────────────────────────────────────────────────────
 export default function GalaxyBackground() {
   return (
-    <div style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none' }}>
+    <div style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none' }} aria-hidden="true">
       <Canvas
         camera={{ position: [0, 18, 30], fov: 58 }}
         gl={{ antialias: true, alpha: true }}
+        dpr={[1, 1.75]}
+        eventSource={document.body}
+        eventPrefix="client"
         style={{ background: '#03030a' }}
       >
         <Scene />
@@ -348,6 +376,9 @@ export default function GalaxyBackground() {
         background: 'radial-gradient(ellipse at 50% 46%, transparent 20%, rgba(3,3,10,0.45) 100%)',
         pointerEvents: 'none',
       }} />
+
+      {/* Extra dimming on narrow screens, where text sits over the whole scene */}
+      <div className="galaxy-dim" />
 
       {/* Bottom fade */}
       <div style={{
